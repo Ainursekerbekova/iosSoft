@@ -12,7 +12,6 @@ class RequestSender {
     var token:String = ""
     var Response_code:Int?
     var data:list?
-    var Current_User:String?
     var base_url = "http://4ebedc28.ngrok.io/runners"
 
     func login(_ Logdata:LogInData, completion: ((Bool) -> (Void))?) {
@@ -67,6 +66,7 @@ class RequestSender {
             }
             if let response = response as? HTTPURLResponse {
                 print("Response HTTP Status code for all orders: \(response.statusCode)")
+                self.Response_code = response.statusCode
             }
             //handling data to string format
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
@@ -128,7 +128,7 @@ class RequestSender {
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
                 print("Response data string:\n \(dataString)")
             }
-            guard let data = data else { return }
+            //guard let data = data else { return }
             
             
             /*do {

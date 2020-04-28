@@ -65,15 +65,15 @@ struct Order:Codable {
 }
 struct item :Codable{
     var title: String
-    var price: Int?
-    var cnt:Int?
-    var grams:Int?
+    var price: String?
+    var cnt:String?
+    var grams:String?
     var barcode:String?
     init(_ dictionary: [String: Any]?) {
         title = dictionary!["title"] as! String
-        price = dictionary!["price"] as? Int
-        cnt = dictionary!["cnt"] as? Int
-        grams = dictionary!["grams"] as? Int
+        price = dictionary!["price"] as? String
+        cnt = dictionary!["cnt"] as? String
+        grams = dictionary!["grams"] as? String
         barcode = dictionary!["barcode"] as? String
     }
 }

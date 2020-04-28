@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		871CD15D2458869B0055CDF3 /* OrderDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871CD15C2458869B0055CDF3 /* OrderDetailsVC.swift */; };
+		871CD18224589DC60055CDF3 /* Ezshop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 871CD18024589DC60055CDF3 /* Ezshop.xcdatamodeld */; };
 		873DCFB323EED82300ACEC99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873DCFB223EED82300ACEC99 /* AppDelegate.swift */; };
 		873DCFB823EED82300ACEC99 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873DCFB623EED82300ACEC99 /* Main.storyboard */; };
 		873DCFBA23EED82300ACEC99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 873DCFB923EED82300ACEC99 /* Assets.xcassets */; };
@@ -16,11 +18,12 @@
 		873DCFCD23F03ACB00ACEC99 /* OrdersTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873DCFCC23F03ACB00ACEC99 /* OrdersTableCell.swift */; };
 		879691642453225500A83BD8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879691632453225500A83BD8 /* LoginViewController.swift */; };
 		87969166245322C000A83BD8 /* Orders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87969165245322C000A83BD8 /* Orders.swift */; };
-		87C6A77524433CE10020D9DB /* DetailsTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C6A77424433CE10020D9DB /* DetailsTableVC.swift */; };
 		87C6A77724433D870020D9DB /* ItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C6A77624433D870020D9DB /* ItemsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		871CD15C2458869B0055CDF3 /* OrderDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsVC.swift; sourceTree = "<group>"; };
+		871CD18124589DC60055CDF3 /* Ezshop.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Ezshop.xcdatamodel; sourceTree = "<group>"; };
 		873DCFAF23EED82300ACEC99 /* IOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		873DCFB223EED82300ACEC99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		873DCFB723EED82300ACEC99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -32,7 +35,6 @@
 		873DCFCC23F03ACB00ACEC99 /* OrdersTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersTableCell.swift; sourceTree = "<group>"; };
 		879691632453225500A83BD8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		87969165245322C000A83BD8 /* Orders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orders.swift; sourceTree = "<group>"; };
-		87C6A77424433CE10020D9DB /* DetailsTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableVC.swift; sourceTree = "<group>"; };
 		87C6A77624433D870020D9DB /* ItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,10 +76,11 @@
 				873DCFC423EF39CA00ACEC99 /* RequestSender.swift */,
 				873DCFCA23F0342500ACEC99 /* Struct.swift */,
 				873DCFCC23F03ACB00ACEC99 /* OrdersTableCell.swift */,
-				87C6A77424433CE10020D9DB /* DetailsTableVC.swift */,
 				87C6A77624433D870020D9DB /* ItemsTableViewCell.swift */,
 				879691632453225500A83BD8 /* LoginViewController.swift */,
 				87969165245322C000A83BD8 /* Orders.swift */,
+				871CD15C2458869B0055CDF3 /* OrderDetailsVC.swift */,
+				871CD18024589DC60055CDF3 /* Ezshop.xcdatamodeld */,
 			);
 			path = IOSApp;
 			sourceTree = "<group>";
@@ -156,10 +159,11 @@
 				87C6A77724433D870020D9DB /* ItemsTableViewCell.swift in Sources */,
 				873DCFCB23F0342500ACEC99 /* Struct.swift in Sources */,
 				873DCFB323EED82300ACEC99 /* AppDelegate.swift in Sources */,
+				871CD15D2458869B0055CDF3 /* OrderDetailsVC.swift in Sources */,
 				873DCFC523EF39CA00ACEC99 /* RequestSender.swift in Sources */,
-				87C6A77524433CE10020D9DB /* DetailsTableVC.swift in Sources */,
 				87969166245322C000A83BD8 /* Orders.swift in Sources */,
 				879691642453225500A83BD8 /* LoginViewController.swift in Sources */,
+				871CD18224589DC60055CDF3 /* Ezshop.xcdatamodeld in Sources */,
 				873DCFCD23F03ACB00ACEC99 /* OrdersTableCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,6 +362,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		871CD18024589DC60055CDF3 /* Ezshop.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				871CD18124589DC60055CDF3 /* Ezshop.xcdatamodel */,
+			);
+			currentVersion = 871CD18124589DC60055CDF3 /* Ezshop.xcdatamodel */;
+			path = Ezshop.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 873DCFA723EED82300ACEC99 /* Project object */;
 }

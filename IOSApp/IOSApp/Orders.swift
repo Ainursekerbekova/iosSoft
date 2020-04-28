@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreData
+
 
 class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -17,10 +19,8 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         return spisok.count
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as! OrdersTableCell
-        
         let obj = list?.orders[indexPath.row]
         cell.ClientAdress.text = obj!.client_address
         cell.ClientName.text = obj!.client_name
@@ -30,16 +30,28 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         if(obj!.status == "Доставлено" ){
             cell.subviews[0].subviews[1].isHidden = true
         }
-        if( obj!.status == "В ожидании"){
+        if(obj!.status == "В ожидании"){
             cell.subviews[0].subviews[1].isHidden = false
         }
-        if( obj!.status == "Принято"){
+        if(obj!.status == "Принято"){
             cell.subviews[0].subviews[1].isHidden = true
         }
         cell.order = obj
         cell.RS = self.RS
-        
         return cell
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let obj = list?.orders[indexPath.row]
+        if(obj!.status == "Доставлено" || obj!.status == "Принято"){
+            return 160
+        }
+        return 195
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
@@ -49,44 +61,24 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
     var token:String?
     var list:list?
     var page_num:Int = 1
+    var CurrentUser:Session?
     
     @IBOutlet weak var Table: UITableView!
-    
-    func reload() {
-        self.Table.reloadData()
-    }
-    
+    @IBOutlet weak var MoreButton: UIButton!
     @IBAction func MoreOrders(_ sender: UIButton) {
         self.page_num = page_num+1
         self.RS!.Allorders(page_num){ result in
             let code = self.RS?.Response_code
             DispatchQueue.main.async {
                 if (code == 200){
-                    var more_list = self.RS!.data
+                    let more_list = self.RS!.data
                     if (more_list == nil){
                         //tut dolgna ischeznut knopka  co slovami net bolshe zakazov
+                        self.MoreButton.isHidden = true
                     }else{
-                        var i=0
-                        var to_end:[Order]=[]
-                        var to_middle:[Order]=[]
-                        for order in more_list!.orders{
-                            if (order.status == "Принято"  && order.runner != self.RS!.Current_User){
-                                to_middle.append(order)
-                                more_list!.orders.remove(at: i)
-                                i=i-1
-                            }
-                            if (order.status == "Доставлено"  ){
-                                to_end.append(order)
-                                more_list!.orders.remove(at: i)
-                                i=i-1
-                            }
-                            i=i+1
-                        }
-                        more_list!.orders.append(contentsOf: to_middle)
-                        more_list!.orders.append(contentsOf: to_end)
                         self.list?.orders.append(contentsOf: more_list!.orders)
                     }
-                    
+                    self.sortOrders()
                     self.reload()
                 }
             }
@@ -96,29 +88,13 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         super.viewDidLoad()
         Table.dataSource = self
         Table.delegate = self
+        self.CurrentUser = self.loadSession()[0]
         self.RS!.Allorders(1){ result in
-            let code = self.RS?.Response_code
+            let code = self.RS!.Response_code
             DispatchQueue.main.async {
                 if (code == 200){
                     self.list = self.RS!.data!
-                    var i=0
-                    var to_end:[Order]=[]
-                    var to_middle:[Order]=[]
-                    for order in self.list!.orders{
-                        if (order.status == "Принято"  && order.runner != self.RS!.Current_User){
-                            to_middle.append(order)
-                            self.list?.orders.remove(at: i)
-                            i=i-1
-                        }
-                        if (order.status == "Доставлено"  ){
-                            to_end.append(order)
-                            self.list?.orders.remove(at: i)
-                            i=i-1
-                        }
-                        i=i+1
-                    }
-                    self.list?.orders.append(contentsOf: to_middle)
-                    self.list?.orders.append(contentsOf: to_end)
+                    self.sortOrders()
                     self.reload()
                 }
          }
@@ -126,19 +102,10 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
 
         // Do any additional setup after loading the view.
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    override func viewDidAppear(_ animated: Bool) {
+        self.reload()
     }
     
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 170
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
     /*
     // MARK: - Navigation
 
@@ -152,7 +119,7 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == "OrderDetail"{
-            let dest = segue.destination as! DetailsTableVC
+            let dest = segue.destination as! OrderDetailsVC
             let cell = self.Table.cellForRow(at: self.Table.indexPathForSelectedRow!) as! OrdersTableCell
             dest.add = "\(cell.order!.client_address)"
             dest.name = "\( cell.order!.client_name)"
@@ -161,8 +128,53 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
             dest.shopAdd = "\( String(describing: cell.order!.store_id))"
             dest.total = "\( String(describing: cell.order!.total))"
             dest.order = cell.order
-            
+            dest.RS = self.RS!
         }
     }
 
+    func loadSession()->[Session] {
+        var arr:[Session] = []
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
+            let context = appDelegate.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<Session >(entityName: "Session")
+            do{
+                try arr = context.fetch(fetchRequest)
+            }catch{
+                print("Error in loading")
+            }
+        }
+        return arr
+    }
+    func sortOrders()  {
+        var my:Order?
+        var CanTake:[Order] = []
+        var Taken:[Order] = []
+        var Done:[Order] = []
+        for ord in list!.orders{
+            if(ord.status == "Доставлено" ){
+                Done.append(ord)
+            }
+            if( ord.status == "В ожидании"){
+                CanTake.append(ord)
+            }
+            if( ord.status == "Принято"){
+                if (ord.runner == self.CurrentUser?.user){
+                    my = ord
+                }else{
+                    Taken.append(ord)
+                }
+            }
+        }
+        var all:[Order] = []
+        if (my != nil){ all.append(my!)}
+        all.append(contentsOf: CanTake)
+        all.append(contentsOf: Taken)
+        all.append(contentsOf: Done)
+        list?.orders = all
+        
+    }
+    func reload() {
+        self.Table.reloadData()
+    }
+    
 }
