@@ -12,7 +12,7 @@ class RequestSender {
     var token:String = ""
     var Response_code:Int?
     var data:list?
-    var base_url = "http://4ebedc28.ngrok.io/runners"
+    var base_url = "http://7567a78b.ngrok.io/runners"
 
     func login(_ Logdata:LogInData, completion: ((Bool) -> (Void))?) {
         guard let requestUrl = URL(string:(self.base_url+"/login")) else { fatalError()}
@@ -74,18 +74,7 @@ class RequestSender {
             }
             guard let data = data else { return }
             
-    
-            //handling data from json to stucts format //var 3
-            /*do {
-                if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    print(convertedJsonIntoDict)
-                    let ordersInNSArray = convertedJsonIntoDict["orders"]
-                   
-                    let my_list = list.init(convertedJsonIntoDict["orders"] as! [String : Any] )
-                    print(my_list)
-                }
-            } catch let error as NSError {print(error.localizedDescription)}
-            */
+            //handling data to object and save them in self.data
             do {
                 if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     //print( convertedJsonIntoDict["orders"] as! [[String : Any]])
@@ -123,10 +112,54 @@ class RequestSender {
             }
             if let response = response as? HTTPURLResponse {
                 print("Response HTTP Status code: \(response.statusCode)")
+                self.Response_code = response.statusCode
             }
             //handling data to string format
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                print("Response data string:\n \(dataString)")
+                print("sended data",forBody)
+                print("Response data string from status changing:\n \(dataString)")
+            }
+            //guard let data = data else { return }
+            
+            
+            /*do {
+             if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+             //print( convertedJsonIntoDict["orders"] as! [[String : Any]])
+             let orders = convertedJsonIntoDict["orders"] as! [[String : Any]]
+             let my_list = list.init(orders )
+             self.data = my_list
+             completion?(true)
+             }
+             } catch let error as NSError {print(error.localizedDescription)}*/
+        }
+        task.resume()
+    }
+    
+    func VerifyCode(data forBody:VerifyCodeData ,completion: ((Bool) -> (Void))?) {
+        guard let requestUrl = URL(string:(self.base_url+"/verify-order")) else { fatalError()}
+        var request = URLRequest(url: requestUrl)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(self.token, forHTTPHeaderField: "x-auth-token")
+        var body:Data?
+        do { body = try JSONEncoder().encode(forBody)}
+        catch { print("Error when encoding json : \(error.localizedDescription).")}
+        request.httpBody = body!
+        
+        request.httpMethod = "POST"
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            // if error in getting response
+            if let error = error {
+                print("Error took place \(error)")
+                return
+            }
+            if let response = response as? HTTPURLResponse {
+                print("Response HTTP Status code: \(response.statusCode)")
+                self.Response_code = response.statusCode
+            }
+            //handling data to string format
+            if let data = data, let dataString = String(data: data, encoding: .utf8) {
+                print("sended data",forBody)
+                print("Response data string from code verification:\n \(dataString)")
             }
             //guard let data = data else { return }
             

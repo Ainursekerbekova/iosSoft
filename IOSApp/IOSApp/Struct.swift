@@ -85,5 +85,8 @@ struct LogInData:Codable {
 }
 struct ChangeStatusData:Codable {
     var status_id: Int
-    var order_id:Int
+    var id:Int
+}
+struct VerifyCodeData:Codable {
+    var code: String
 }

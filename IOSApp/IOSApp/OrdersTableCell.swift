@@ -18,7 +18,7 @@ class OrdersTableCell: UITableViewCell {
     @IBOutlet weak var Status: UILabel!
     @IBAction func TakeOrder(_ sender: UIButton) {
         let id = Int( order!.id)
-        let sendData = ChangeStatusData.init(status_id: 2, order_id: id!)
+        let sendData = ChangeStatusData.init(status_id: 2, id: id!)
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
         })

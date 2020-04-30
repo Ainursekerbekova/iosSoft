@@ -97,7 +97,7 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBAction func CancelOrder(_ sender: UIButton) {
         let id = Int( order!.id)
-        let sendData = ChangeStatusData.init(status_id: 4, order_id: id!)
+        let sendData = ChangeStatusData.init(status_id: 4, id: id!)
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
         })
@@ -106,16 +106,32 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBAction func DoneOrder(_ sender: UIButton) {
         let id = Int( order!.id)
-        let sendData = ChangeStatusData.init(status_id: 3, order_id: id!)
+        let sendData = ChangeStatusData.init(status_id: 3, id: id!)
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
         })
+        let AC = UIAlertController(title: "Введите код верификации", message: "На номер телефона клиента отправлен код верификации", preferredStyle: .alert)
+        let sendcode = UIAlertAction(title: "Отправить", style: .default) { (UIAlertAction) in
+            self.dismiss(animated: true, completion:  {
+                 let textField = AC.textFields![0]
+                 let code = textField.text
+                 let verifyData = VerifyCodeData.init(code: code!)
+                 self.RS?.VerifyCode(data: verifyData, completion: { Result in
+                 print(Result)
+                 })
+            })
+        }
+        AC.addTextField { (textField) in
+            textField.placeholder = "Enter code"
+        }
+        AC.addAction(sendcode)
+        self.present(AC, animated: true, completion: nil)
         //print(order?.id)
+        
     }
-    
     @IBAction func TakeOrder(_ sender: UIButton) {
         let id = Int( order!.id)
-        let sendData = ChangeStatusData.init(status_id: 2, order_id: id!)
+        let sendData = ChangeStatusData.init(status_id: 2, id: id!)
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
         })

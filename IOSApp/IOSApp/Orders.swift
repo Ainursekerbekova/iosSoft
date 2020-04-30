@@ -89,6 +89,10 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         Table.dataSource = self
         Table.delegate = self
         self.CurrentUser = self.loadSession()[0]
+    
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         self.RS!.Allorders(1){ result in
             let code = self.RS!.Response_code
             DispatchQueue.main.async {
@@ -97,27 +101,11 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
                     self.sortOrders()
                     self.reload()
                 }
-         }
+            }
         }
-
-        // Do any additional setup after loading the view.
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        self.reload()
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
         if segue.identifier == "OrderDetail"{
             let dest = segue.destination as! OrderDetailsVC
             let cell = self.Table.cellForRow(at: self.Table.indexPathForSelectedRow!) as! OrdersTableCell
