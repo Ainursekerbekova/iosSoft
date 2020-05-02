@@ -89,7 +89,7 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         Table.dataSource = self
         Table.delegate = self
         self.CurrentUser = self.loadSession()[0]
-    
+        self.reload()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -112,8 +112,8 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
             dest.add = "\(cell.order!.client_address)"
             dest.name = "\( cell.order!.client_name)"
             dest.phone = "\(cell.order!.client_phone)"
-            dest.shop = "\( String(describing: cell.order!.store_id))"
-            dest.shopAdd = "\( String(describing: cell.order!.store_id))"
+            dest.shop = "\( String(describing: cell.order!.store_id!))"
+            dest.shopAdd = "\( String(describing: cell.order!.store_id!))"
             dest.total = "\( String(describing: cell.order!.total))"
             dest.order = cell.order
             dest.RS = self.RS!

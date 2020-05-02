@@ -25,10 +25,10 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let grams = Int(obj.grams!)
         if (obj.cnt != "0"){
             cell.Amount.text = "\(obj.cnt!)  шт"
-            item_sum = count! * price!
+            item_sum = count! * price
         }else{
             cell.Amount.text = "\(obj.grams!)  гр"
-            item_sum = grams! * price! * 1 / 1000
+            item_sum = grams! * price * 1 / 1000
         }
         cell.Barcode.text = "\( String(describing: obj.barcode!))"
         
@@ -75,6 +75,7 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.ClientName.text = name!
         self.ClientPhone.text = phone!
         self.ClientAddress.text = add!
+        self.findShop()
         if (shop != nil){
             self.ShopName.text = shop!
         }
@@ -90,6 +91,13 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         return 180
     }
 
+    func findShop()  {
+        let id = Int(self.shop!)
+        let sendData = ShopData.init(store_id: id!)
+        self.RS?.FindShop(data: sendData, completion: { Result in
+            print(Result)
+        })
+    }
     
     @IBAction func Back(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
@@ -135,6 +143,7 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
         })
+        
         //print(order?.id)
     }
     @IBOutlet weak var CancelButton: UIButton!

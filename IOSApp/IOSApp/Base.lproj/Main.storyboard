@@ -151,7 +151,7 @@
         <!--PersonDetail-->
         <scene sceneID="Oor-cp-yIV">
             <objects>
-                <viewController storyboardIdentifier="PersonView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OU1-MU-OpZ" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PersonView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OU1-MU-OpZ" customClass="PersonalData" customModule="IOSApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="K6j-V3-AGA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -160,6 +160,27 @@
                                 <rect key="frame" x="176" y="411.5" width="62" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oS6-YY-SlG">
+                                <rect key="frame" x="186" y="79" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGJ-7h-kjT">
+                                <rect key="frame" x="59" y="119" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2gR-al-liw">
+                                <rect key="frame" x="186" y="119" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -171,6 +192,11 @@
                         <viewLayoutGuide key="safeArea" id="R9v-3p-her"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="PersonDetail" id="tc6-yK-oMU"/>
+                    <connections>
+                        <outlet property="Money" destination="2gR-al-liw" id="Zuu-tn-O8r"/>
+                        <outlet property="Name" destination="qGJ-7h-kjT" id="xc0-wc-rml"/>
+                        <outlet property="Rating" destination="oS6-YY-SlG" id="DlT-NX-lq4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vb4-91-c70" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -682,6 +708,30 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7B-dV-4Xa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1286.9565217391305" y="-455.35714285714283"/>
+        </scene>
+        <!--MapVC-->
+        <scene sceneID="pdx-8I-ppj">
+            <objects>
+                <viewController id="HYa-Gl-bQj" customClass="MapVC" customModule="IOSApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="T74-d7-0tY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5Mm-i9-r1N">
+                                <rect key="frame" x="0.0" y="59" width="414" height="786"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="RLJ-hz-Rzb"/>
+                    </view>
+                    <connections>
+                        <outlet property="Map" destination="5Mm-i9-r1N" id="KfJ-jQ-WcX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e9J-ch-bpP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2424.6376811594205" y="-455.35714285714283"/>
         </scene>
     </scenes>
     <resources>

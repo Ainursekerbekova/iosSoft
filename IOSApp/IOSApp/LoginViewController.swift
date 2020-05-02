@@ -68,9 +68,10 @@ class LoginViewController: UIViewController {
     func goFurther() {
         let tabbar = self.storyboard?.instantiateViewController(withIdentifier: "myVCID") as! UITabBarController
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "OrdersView") as! Orders
-        let personVC = self.storyboard?.instantiateViewController(withIdentifier: "PersonView") as! UIViewController
+        let personVC = self.storyboard?.instantiateViewController(withIdentifier: "PersonView") as! PersonalData
        
         vc.RS = self.RS
+        personVC.RS = self.RS
         tabbar.viewControllers = [vc, personVC]
         self.present(tabbar, animated: true, completion: nil)
     }
