@@ -21,6 +21,7 @@
 		87C6A77724433D870020D9DB /* ItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C6A77624433D870020D9DB /* ItemsTableViewCell.swift */; };
 		87F8CCE1245DEE2A0029DEA9 /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F8CCE0245DEE2A0029DEA9 /* MapVC.swift */; };
 		87F8CCE3245DF97D0029DEA9 /* PersonalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F8CCE2245DF97D0029DEA9 /* PersonalData.swift */; };
+		F9884047245E68F3006961FE /* CodeClientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9884046245E68F3006961FE /* CodeClientViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		87C6A77624433D870020D9DB /* ItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTableViewCell.swift; sourceTree = "<group>"; };
 		87F8CCE0245DEE2A0029DEA9 /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		87F8CCE2245DF97D0029DEA9 /* PersonalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalData.swift; sourceTree = "<group>"; };
+		F9884046245E68F3006961FE /* CodeClientViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeClientViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				873DCFCC23F03ACB00ACEC99 /* OrdersTableCell.swift */,
 				87C6A77624433D870020D9DB /* ItemsTableViewCell.swift */,
 				879691632453225500A83BD8 /* LoginViewController.swift */,
+				F9884046245E68F3006961FE /* CodeClientViewController.swift */,
 				87969165245322C000A83BD8 /* Orders.swift */,
 				871CD15C2458869B0055CDF3 /* OrderDetailsVC.swift */,
 				871CD18024589DC60055CDF3 /* Ezshop.xcdatamodeld */,
@@ -168,6 +171,7 @@
 				873DCFB323EED82300ACEC99 /* AppDelegate.swift in Sources */,
 				871CD15D2458869B0055CDF3 /* OrderDetailsVC.swift in Sources */,
 				873DCFC523EF39CA00ACEC99 /* RequestSender.swift in Sources */,
+				F9884047245E68F3006961FE /* CodeClientViewController.swift in Sources */,
 				87F8CCE1245DEE2A0029DEA9 /* MapVC.swift in Sources */,
 				87969166245322C000A83BD8 /* Orders.swift in Sources */,
 				879691642453225500A83BD8 /* LoginViewController.swift in Sources */,
