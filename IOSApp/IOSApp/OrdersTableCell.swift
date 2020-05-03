@@ -10,14 +10,19 @@ import UIKit
 class OrdersTableCell: UITableViewCell {
     
     var order:Order?
+    var RS:RequestSender?
     @IBOutlet weak var ClientName: UILabel!
     @IBOutlet weak var ClientAdress: UILabel!
-    @IBOutlet weak var ClientPhone: UILabel!
     @IBOutlet weak var Price: UILabel!
-    @IBOutlet weak var Paying: UILabel!
     @IBOutlet weak var Date: UILabel!
     @IBOutlet weak var Status: UILabel!
     @IBAction func TakeOrder(_ sender: UIButton) {
+        let id = Int( order!.id)
+        let sendData = ChangeStatusData.init(status_id: 2, id: id!)
+        self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
+            print(Result)
+        })
+        //print(order?.id)
     }
     
     

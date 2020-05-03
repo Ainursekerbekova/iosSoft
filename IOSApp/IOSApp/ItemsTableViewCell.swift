@@ -13,7 +13,6 @@ class ItemsTableViewCell: UITableViewCell {
     @IBOutlet weak var Sum_on_Item: UILabel!
     @IBOutlet weak var Title: UILabel!
     @IBOutlet weak var Amount: UILabel!
-    @IBOutlet weak var Weight: UILabel!
     @IBOutlet weak var Barcode: UILabel!
     
     override func awakeFromNib() {

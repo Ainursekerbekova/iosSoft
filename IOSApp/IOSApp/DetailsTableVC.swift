@@ -34,12 +34,13 @@ class DetailsTableVC: UITableViewController {
         self.ClientName.text = name!
         self.ClientPhone.text = phone!
         self.ClientAddress.text = add!
-        self.Shop.text = shop!
-        self.ShopAddress.text = shopAdd!
+        if (shop != nil){
+            self.Shop.text = shop!
+        }
+        if (shopAdd != nil){
+            self.ShopAddress.text = shopAdd!
+        }
         self.TotalSum.text = total!
-        print(ClientPhone.text!)
-        print("----------------------")
-        print(spisok)
         self.tableView.reloadData()
         
         // Uncomment the following line to preserve selection between presentations
