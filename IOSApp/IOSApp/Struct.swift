@@ -52,8 +52,8 @@ struct Order:Codable {
         client_phone = dictionary!["client_phone"] as! String
         taken = dictionary!["taken"] as? Int
         runner = dictionary!["runner"] as! String
-        lat = dictionary!["lat"] as? String
-        lng = dictionary!["lng"] as? String
+        lat = dictionary!["lat"] as! String
+        lng = dictionary!["lng"] as! String
         distance = dictionary!["distance"] as! String
         items=[]
         let items_dict = dictionary!["items"] as? [[String: Any]]
@@ -72,9 +72,9 @@ struct item :Codable{
     init(_ dictionary: [String: Any]?) {
         title = dictionary!["title"] as! String
         price = dictionary!["price"] as? Int
-        cnt = dictionary!["cnt"] as? String
-        grams = dictionary!["grams"] as? String
-        barcode = dictionary!["barcode"] as? String
+        cnt = dictionary!["cnt"] as! String
+        grams = dictionary!["grams"] as! String
+        barcode = dictionary!["barcode"] as! String
     }
 }
 
@@ -90,8 +90,21 @@ struct ChangeStatusData:Codable {
 struct VerifyCodeData:Codable {
     var code: String
 }
-struct ShopData:Codable {
-    var store_id: Int
+struct Shop:Codable {
+    var id: Int
+    var address: String
+    var lat: Double
+    var lng: Double
+    var image: String
+    var title: String
+    init(_ dictionary: [String: Any]?) {
+        id = dictionary!["id"] as! Int
+        address = dictionary!["address"] as! String
+        lat = dictionary!["lat"] as! Double
+        lng = dictionary!["lng"] as! Double
+        image = dictionary!["image"] as! String
+        title = dictionary!["title"] as! String
+    }
 }
 
 struct PersonStruct {

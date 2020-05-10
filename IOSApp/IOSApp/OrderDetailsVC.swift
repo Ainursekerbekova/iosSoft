@@ -16,8 +16,11 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemsTableViewCell
-        let obj = spisok![indexPath.row]
+        var obj = spisok![indexPath.row]
         cell.Title.text = "\(obj.title)"
+        if ((obj.price) == nil ){
+            obj.price = 2000
+        }
         cell.Price.text = "х   \(String(describing: obj.price!)) тг"
         var item_sum = 0
         let price = Int(obj.price!)
@@ -51,6 +54,7 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var add:String?
     var phone:String?
     var shop:String?
+    var shopTitle:String?
     var shopAdd:String?
     var total:String?
     var CurrentUser:Session?
@@ -76,12 +80,6 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.ClientPhone.text = phone!
         self.ClientAddress.text = add!
         self.findShop()
-        if (shop != nil){
-            self.ShopName.text = shop!
-        }
-        if (shopAdd != nil){
-            self.ShopAddres.text = shopAdd!
-        }
         self.TotalSum.text = total!
         self.ItemsTable.reloadData()
         // Do any additional setup after loading the view.
@@ -93,10 +91,21 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func findShop()  {
         let id = Int(self.shop!)
-        let sendData = ShopData.init(store_id: id!)
-        self.RS?.FindShop(data: sendData, completion: { Result in
-            print(Result)
-        })
+        self.RS?.FindShop( ){ result in
+            print("shops:----------------------------------------------------------------")
+            print(self.RS!.All_Shops!)
+            for store in self.RS!.All_Shops!{
+                print(store.id)
+                print(id)
+                if (store.id == id){
+                    self.shopTitle = store.title
+                    self.shopAdd = store.address
+                    self.ShopName.text = self.shopTitle
+                    self.ShopAddres.text = self.shopAdd
+                }
+            }
+            
+        }
     }
     
     @IBAction func Back(_ sender: UIButton) {
@@ -109,7 +118,6 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
         })
-        //print(order?.id)
     }
     
     @IBAction func DoneOrder(_ sender: UIButton) {
@@ -126,6 +134,9 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                  let verifyData = VerifyCodeData.init(code: code!)
                  self.RS?.VerifyCode(data: verifyData, completion: { Result in
                  print(Result)
+                    let VC = self.presentedViewController as? Orders
+                    VC?.updateList()
+                
                  })
             })
         }
@@ -134,8 +145,6 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         AC.addAction(sendcode)
         self.present(AC, animated: true, completion: nil)
-        //print(order?.id)
-        
     }
     @IBAction func TakeOrder(_ sender: UIButton) {
         let id = Int( order!.id)
@@ -143,21 +152,12 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
         })
-        
-        //print(order?.id)
     }
     @IBOutlet weak var CancelButton: UIButton!
     @IBOutlet weak var DoneButton: UIButton!
     @IBOutlet weak var TakeButton: UIButton!
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
+    
     func loadSession()->[Session] {
         var arr:[Session] = []
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{

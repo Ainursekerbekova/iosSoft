@@ -13,7 +13,9 @@ class RequestSender {
     var Response_code:Int?
     var data:list?
     var persData:PersonStruct?
-    var base_url = "http://d6033da0.ngrok.io/runners"
+    var All_Shops:[Shop]?
+    var base_url = "http://e9661ac1.ngrok.io/runners"
+    var stores_url = "http://e9661ac1.ngrok.io/api/stores"
 
     func login(_ Logdata:LogInData, completion: ((Bool) -> (Void))?) {
         guard let requestUrl = URL(string:(self.base_url+"/login")) else { fatalError()}
@@ -78,7 +80,6 @@ class RequestSender {
             //handling data to object and save them in self.data
             do {
                 if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    //print( convertedJsonIntoDict["orders"] as! [[String : Any]])
                     let orders = convertedJsonIntoDict["orders"] as! [[String : Any]]
                     if (orders.count != 0){
                         let my_list = list.init(orders )
@@ -101,7 +102,6 @@ class RequestSender {
         do { body = try JSONEncoder().encode(forBody)}
         catch { print("Error when encoding json : \(error.localizedDescription).")}
         request.httpBody = body!
-        
         request.httpMethod = "POST"
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             // if error in getting response
@@ -115,7 +115,6 @@ class RequestSender {
             }
             //handling data to string format
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                print("sended data",forBody)
                 print("Response data string from status changing:\n \(dataString)")
             }
         }
@@ -151,15 +150,11 @@ class RequestSender {
         task.resume()
     }
     
-    func FindShop(data forBody:ShopData ,completion: ((Bool) -> (Void))?) {
-        guard let requestUrl = URL(string:(self.base_url+"/stores")) else { fatalError()}
+    func FindShop(completion: ((Bool) -> (Void))?) {
+        guard let requestUrl = URL(string:(self.stores_url)) else { fatalError()}
         var request = URLRequest(url: requestUrl)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(self.token, forHTTPHeaderField: "x-auth-token")
-        var body:Data?
-        do { body = try JSONEncoder().encode(forBody)}
-        catch { print("Error when encoding json : \(error.localizedDescription).")}
-        request.httpBody = body!
         request.httpMethod = "POST"
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             // if error in getting response
@@ -173,9 +168,14 @@ class RequestSender {
             }
             //handling data to string format
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                print("sended data",forBody)
-                print("Response data string from code verification:\n \(dataString)")
+                print("Response data string from shop finding:\n \(dataString)")
             }
+            
+            guard let data = data else { return }
+            
+            //handling data to object and save them in self.data
+            let shops: [Shop] = try! JSONDecoder().decode([Shop].self, from: data)
+            self.All_Shops = shops
         }
         task.resume()
     }
@@ -205,14 +205,20 @@ class RequestSender {
             //handling data to object and save them in self.data
             do {
                 if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    //print( convertedJsonIntoDict["orders"] as! [[String : Any]])
                     let id = convertedJsonIntoDict["id"] as! Int
                     let rating = convertedJsonIntoDict["rating"]  as! Int
                     let money = convertedJsonIntoDict["money"]  as! Int
                     let username = convertedJsonIntoDict["username"] as! String
-                    let ord = convertedJsonIntoDict["order"] as? [String : Any]
+                    var ord = convertedJsonIntoDict["order"] as? [String : Any]
+                    
                     var order:Order? = nil
                     if (ord != nil ){
+                        let ordID =  "\(ord!["id"]!)"
+                        let delPrice = "\(ord!["delivery_price"]!)"
+                        let distance = "\(ord!["distance"])"
+                        ord?.updateValue(ordID, forKey: "id")
+                        ord?.updateValue(delPrice, forKey: "delivery_price")
+                        ord?.updateValue(distance, forKey: "distance")
                         order = Order.init(ord)
                     }
                     let person = PersonStruct.init(id: id, rating: rating, money: money, username: username , order: order)

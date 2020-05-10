@@ -55,7 +55,6 @@ class LoginViewController: UIViewController {
         //self.DelALLCore()
         let sess = self.loadSession()
         if( sess.count != 0) {
-            print(sess[0])
             self.RS.token = sess[0].token!
             self.goFurther()
         }
@@ -95,47 +94,25 @@ class LoginViewController: UIViewController {
     }
     func DelALLCore()  {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        
-        // 1
         let managedContext = appDelegate.persistentContainer.viewContext
-        // Initialize Fetch Request
         let fetchRequest = NSFetchRequest<Session >(entityName: "Session")
-        
-        // Configure Fetch Request
         fetchRequest.includesPropertyValues = false
-        
         do {
             let items = try managedContext.fetch(fetchRequest)
-            
             for item in items {
                 managedContext.delete(item)
             }
-            
-            // Save Changes
             try managedContext.save()
-            
         } catch {
-            // Error Handling
-            // ...
         }
     }
     func save(_ username: String,_ token:String) {
-        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        
-        // 1
         let managedContext = appDelegate.persistentContainer.viewContext
-        
-        // 2
         let entity = NSEntityDescription.entity(forEntityName: "Session", in: managedContext)!
-        
         let person = NSManagedObject(entity: entity, insertInto: managedContext)
-        
-        // 3
         person.setValue(username, forKeyPath: "user")
         person.setValue(token, forKeyPath: "token")
-        
-        // 4
         do {
             try managedContext.save()
         } catch let error as NSError {

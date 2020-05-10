@@ -93,6 +93,11 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        self.updateList()
+    }
+    
+    func updateList(){
+        page_num = 1
         self.RS!.Allorders(1){ result in
             let code = self.RS!.Response_code
             DispatchQueue.main.async {
@@ -103,6 +108,7 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
                 }
             }
         }
+        self.MoreButton.isHidden = false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

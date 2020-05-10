@@ -22,7 +22,6 @@ class OrdersTableCell: UITableViewCell {
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
         })
-        //print(order?.id)
     }
     
     
