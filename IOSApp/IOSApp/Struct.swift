@@ -24,7 +24,7 @@ struct Order:Codable {
     var date:String
     var is_card:Bool?
     var is_bcc_card:Bool?
-    var total: Int?
+    var total: String
     var status:String
     var status_id:String
     var delivery_type:String?
@@ -44,7 +44,7 @@ struct Order:Codable {
         date = dictionary!["date"] as! String
         is_card = dictionary!["is_card"] as? Bool
         is_bcc_card = dictionary!["is_bcc_card"] as? Bool
-        total = dictionary!["total"] as? Int
+        total = dictionary!["total"] as! String
         status = dictionary!["status"] as! String
         status_id = dictionary!["status_id"] as! String
         delivery_type = dictionary!["delivery_type"] as? String
@@ -52,8 +52,8 @@ struct Order:Codable {
         client_phone = dictionary!["client_phone"] as! String
         taken = dictionary!["taken"] as? Int
         runner = dictionary!["runner"] as! String
-        lat = dictionary!["lat"] as! String
-        lng = dictionary!["lng"] as! String
+        lat = (dictionary!["lat"] as! String)
+        lng = (dictionary!["lng"] as! String)
         distance = dictionary!["distance"] as! String
         items=[]
         let items_dict = dictionary!["items"] as? [[String: Any]]
@@ -72,9 +72,9 @@ struct item :Codable{
     init(_ dictionary: [String: Any]?) {
         title = dictionary!["title"] as! String
         price = dictionary!["price"] as? Int
-        cnt = dictionary!["cnt"] as! String
-        grams = dictionary!["grams"] as! String
-        barcode = dictionary!["barcode"] as! String
+        cnt = (dictionary!["cnt"] as! String)
+        grams = (dictionary!["grams"] as! String)
+        barcode = (dictionary!["barcode"] as! String)
     }
 }
 

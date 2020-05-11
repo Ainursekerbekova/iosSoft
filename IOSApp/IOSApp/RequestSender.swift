@@ -14,8 +14,8 @@ class RequestSender {
     var data:list?
     var persData:PersonStruct?
     var All_Shops:[Shop]?
-    var base_url = "http://e9661ac1.ngrok.io/runners"
-    var stores_url = "http://e9661ac1.ngrok.io/api/stores"
+    var base_url = "http://5852e0cf.ngrok.io/runners"
+    var stores_url = "http://5852e0cf.ngrok.io/api/stores"
 
     func login(_ Logdata:LogInData, completion: ((Bool) -> (Void))?) {
         guard let requestUrl = URL(string:(self.base_url+"/login")) else { fatalError()}
@@ -150,12 +150,13 @@ class RequestSender {
         task.resume()
     }
     
-    func FindShop(completion: ((Bool) -> (Void))?) {
+    func FindShop( completion: ((Bool) -> (Void))?) {
         guard let requestUrl = URL(string:(self.stores_url)) else { fatalError()}
         var request = URLRequest(url: requestUrl)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(self.token, forHTTPHeaderField: "x-auth-token")
         request.httpMethod = "POST"
+        
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             // if error in getting response
             if let error = error {
@@ -176,6 +177,7 @@ class RequestSender {
             //handling data to object and save them in self.data
             let shops: [Shop] = try! JSONDecoder().decode([Shop].self, from: data)
             self.All_Shops = shops
+            completion?(true)
         }
         task.resume()
     }
@@ -200,7 +202,6 @@ class RequestSender {
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
                 print("Response data string from person data:\n \(dataString)")
             }
-            
             guard let data = data else { return }
             //handling data to object and save them in self.data
             do {
@@ -210,7 +211,6 @@ class RequestSender {
                     let money = convertedJsonIntoDict["money"]  as! Int
                     let username = convertedJsonIntoDict["username"] as! String
                     var ord = convertedJsonIntoDict["order"] as? [String : Any]
-                    
                     var order:Order? = nil
                     if (ord != nil ){
                         let ordID =  "\(ord!["id"]!)"
@@ -222,13 +222,11 @@ class RequestSender {
                         order = Order.init(ord)
                     }
                     let person = PersonStruct.init(id: id, rating: rating, money: money, username: username , order: order)
-                    
                     self.persData = person
                     completion?(true)
                 }
             } catch let error as NSError {print(error.localizedDescription)}
         }
-        
         task.resume()
     }
 }

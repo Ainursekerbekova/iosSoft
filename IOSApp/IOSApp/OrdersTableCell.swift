@@ -16,14 +16,24 @@ class OrdersTableCell: UITableViewCell {
     @IBOutlet weak var Price: UILabel!
     @IBOutlet weak var Date: UILabel!
     @IBOutlet weak var Status: UILabel!
+    @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!    
     @IBAction func TakeOrder(_ sender: UIButton) {
+        self.TakeOrderButton.isHidden = true
+        self.ActivityIndicator.isHidden = false
+        self.ActivityIndicator.startAnimating()
         let id = Int( order!.id)
         let sendData = ChangeStatusData.init(status_id: 2, id: id!)
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
+            self.ActivityIndicator.isHidden = true
+            self.ActivityIndicator.stopAnimating()
+            self.Status.text = "Принято"
+            self.order?.status_id = "2"
+            self.order?.status = "Принято"
         })
     }
     
+    @IBOutlet weak var TakeOrderButton: UIButton!
     
     
     override func awakeFromNib() {

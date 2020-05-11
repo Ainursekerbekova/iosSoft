@@ -23,12 +23,24 @@ class PersonalData: UIViewController {
     @IBOutlet weak var AddLabel: UILabel!
     @IBOutlet weak var NameLabel: UILabel!
     @IBOutlet weak var PriceLabel: UILabel!
+    @IBOutlet weak var Activity: UIActivityIndicatorView!
     
     
-    @IBAction func LogOut(_ sender: UIButton) {
-        self.DelALLCore()
+    @IBAction func Update(_ sender: UIButton) {
+        self.Activity.isHidden = false
+        self.Activity.startAnimating()
+        self.RS!.PersonData(){ result in
+            let code = self.RS!.Response_code
+            DispatchQueue.main.async {
+                if (code == 200){
+                    self.person = self.RS!.persData
+                    self.setdata()
+                    self.Activity.isHidden = true
+                    self.Activity.stopAnimating()
+                }
+            }
+        }
     }
-    
     
     var RS:RequestSender?
     var token:String?
@@ -37,6 +49,8 @@ class PersonalData: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.Activity.isHidden = false
+        self.Activity.startAnimating()
         self.CurrentUser = self.loadSession()[0]
         self.RS!.PersonData(){ result in
             let code = self.RS!.Response_code
@@ -44,10 +58,11 @@ class PersonalData: UIViewController {
                 if (code == 200){
                     self.person = self.RS!.persData
                     self.setdata()
+                    self.Activity.isHidden = true
+                    self.Activity.stopAnimating()
                 }
             }
         }
-        // Do any additional setup after loading the view.
     }
     
     func setdata()  {
@@ -89,6 +104,9 @@ class PersonalData: UIViewController {
             dest.total = "\( String(describing: person!.order!.total))"
             dest.order = person!.order
             dest.RS = self.RS!
+        }
+        if segue.identifier == "logout"{
+            self.DelALLCore()
         }
     }
     

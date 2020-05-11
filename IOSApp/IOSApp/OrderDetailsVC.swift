@@ -91,20 +91,21 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func findShop()  {
         let id = Int(self.shop!)
-        self.RS?.FindShop( ){ result in
-            print("shops:----------------------------------------------------------------")
-            print(self.RS!.All_Shops!)
+        self.RS!.PersonData(){ result in
+            print("personDataRequest")
+        }
+        self.RS!.FindShop(){ result in
             for store in self.RS!.All_Shops!{
-                print(store.id)
-                print(id)
                 if (store.id == id){
                     self.shopTitle = store.title
                     self.shopAdd = store.address
-                    self.ShopName.text = self.shopTitle
-                    self.ShopAddres.text = self.shopAdd
+                    DispatchQueue.main.async {
+                        self.ShopName.text = self.shopTitle
+                        self.ShopAddres.text = self.shopAdd
+                    }
+                    break
                 }
             }
-            
         }
     }
     
@@ -117,6 +118,10 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let sendData = ChangeStatusData.init(status_id: 4, id: id!)
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
+            self.dismiss(animated: true, completion:  {
+                let VC = self.presentedViewController as? Orders
+                VC?.updateList()
+            })
         })
     }
     
@@ -136,7 +141,6 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                  print(Result)
                     let VC = self.presentedViewController as? Orders
                     VC?.updateList()
-                
                  })
             })
         }
@@ -151,6 +155,12 @@ class OrderDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let sendData = ChangeStatusData.init(status_id: 2, id: id!)
         self.RS?.ChangeOrderStatus(data: sendData, completion: { Result in
             print(Result)
+            self.order?.status_id = "2"
+            self.order?.status = "Принято"
+            self.CancelButton.isHidden = false
+            self.TakeButton.isHidden = true
+            self.DoneButton.isHidden = false
+            
         })
     }
     @IBOutlet weak var CancelButton: UIButton!

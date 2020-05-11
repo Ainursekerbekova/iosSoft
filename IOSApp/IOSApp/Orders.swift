@@ -27,6 +27,7 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         cell.Date.text = obj!.date
         cell.Status.text = obj!.status
         cell.Price.text = obj!.delivery_price + "тг"
+        cell.ActivityIndicator.isHidden = true
         if(obj!.status == "Доставлено" ){
             cell.subviews[0].subviews[1].isHidden = true
         }
@@ -62,6 +63,11 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
     var list:list?
     var page_num:Int = 1
     var CurrentUser:Session?
+    let myRefreshControl: UIRefreshControl = {
+        let RC = UIRefreshControl()
+        RC.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
+        return RC
+    }()
     
     @IBOutlet weak var Table: UITableView!
     @IBOutlet weak var MoreButton: UIButton!
@@ -89,11 +95,24 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         Table.dataSource = self
         Table.delegate = self
         self.CurrentUser = self.loadSession()[0]
-        self.reload()
+        self.updateList()
+        self.Table.refreshControl = myRefreshControl
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        self.updateList()
+    @objc func refresh(sender:UIRefreshControl) {
+        page_num = 1
+        self.RS!.Allorders(1){ result in
+            let code = self.RS!.Response_code
+            DispatchQueue.main.async {
+                if (code == 200){
+                    self.list = self.RS!.data!
+                    self.sortOrders()
+                    self.reload()
+                    sender.endRefreshing()
+                }
+            }
+        }
+        self.MoreButton.isHidden = false
     }
     
     func updateList(){
@@ -116,11 +135,11 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
             let dest = segue.destination as! OrderDetailsVC
             let cell = self.Table.cellForRow(at: self.Table.indexPathForSelectedRow!) as! OrdersTableCell
             dest.add = "\(cell.order!.client_address)"
-            dest.name = "\( cell.order!.client_name)"
+            dest.name = "\(cell.order!.client_name)"
             dest.phone = "\(cell.order!.client_phone)"
-            dest.shop = "\( String(describing: cell.order!.store_id!))"
-            dest.shopAdd = "\( String(describing: cell.order!.store_id!))"
-            dest.total = "\( String(describing: cell.order!.total))"
+            dest.shop = "\(cell.order!.store_id!)"
+            dest.shopAdd = "\(cell.order!.store_id!)"
+            dest.total = cell.order!.total + " тг"
             dest.order = cell.order
             dest.RS = self.RS!
         }
@@ -165,7 +184,6 @@ class Orders: UIViewController, UITableViewDelegate,UITableViewDataSource {
         all.append(contentsOf: Taken)
         all.append(contentsOf: Done)
         list?.orders = all
-        
     }
     func reload() {
         self.Table.reloadData()
